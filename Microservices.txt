@@ -1,0 +1,115 @@
+
+// 
+
+Service-1 : SMS-> port 8080 -->  Single DB
+
+
+School Management System
+
+service -1: service-auth // 8081 -> Single DB1
+service -2: service-user // 8082 -> DB2
+service -3: service-admin // 8083 -> DB3
+service -4: service-library // 8084 -> DB4
+//service -5: service-analyzer // python 8085
+
+
+
+
+
+
+Monolithic Pattern
+
+Limitations:
+	- Tight Coupling of Services
+		a. If one service is down other services also get affected
+		b. If one service is planned to redploy other also get affected
+	- Problem of Scalability
+	- Fixed TechStack
+
+Microservices:
+	
+	- Microservices are a software architecture approach where an application is divided into small , independent and selft contained services that communicate with each other through APIs.
+	- This allows for faster development, deployment and scalability.
+	
+	
+
+// TODO Auto-generated method stub
+		BloodDonationDetailsProxy[] dataResp= template.getForObject("http://localhost:9091/blood-bank/getAllDonatedBGDetails/roshni",BloodDonationDetailsProxy[].class);
+		List<BloodDonationDetailsProxy> finalResult=Arrays.asList(dataResp);
+		return finalResult;
+#eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+#eureka.client.fetch-registry=true
+#eureka.client.register-with-eureka=true
+
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+
+
+eureka.instance.hostname=localhost
+eureka.client.fetch-registry=false
+eureka.client.register-with-eureka=false
+
+
+
+--------------
+
+
+
+Property	   		Example/Syntax							Description
+id			   	   - id : user-contact-service				Unique identifier for the route
+uri					 uri: lb://service-contact-user			Target microservice URL
+predicates	 	predicates :
+					- Path=/gateway/user/**					Conditions to match the incoming request (like URL path)
+filters		   	filters :									Pre-processing or Post-processing (Ex: StripPrefix, AddHeader)
+StripPrefix			- StripPrefix=1							Removes N segments from the path (1 means /gateway will be removed)
+
+-----------------------------------------------------------------
+
+Filter					Description
+
+StripPrefix=1			Removes prefix from path
+AddRequestHeader		Adds custom request header
+RewritePath				Rewrites the request path
+Hystrix					Circuit Breaker Integration
+
+
+
+
+
+server:
+  port: 1000
+Spring:
+  cloud:
+    gateway:
+      routes:
+      - id : service-user
+        uri : lb://service-contact-user
+        predicates :
+          - Path=/api/user/**
+        filters:
+          - StripPrefix=1
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+	
+	
+	
+
+
+
+http://localhost:9096/user/getAllContacts
+
+
+gateway url :
+
+http://localhost:9096
+
+
+service path:
+/user/getAllContacts
+
+service url+service-path
+
+http://localhost:9099/gateway/user/getAllContacts
+	

@@ -1,0 +1,165 @@
+
+Microservice Based Project
+
+-> Create two services with Following descriptions
+
+1. service-contact-management
+	a.POST: Add Contact Details 
+		RequestObject-(id, name, mobileNo,landLineNo,address,pincode)
+		ResponseObject- (name, mobileNo,LandLineNo,statusMessage, StatusCode)
+	b.GET: getContactByName 
+		List<ResponseObject>-(id, name, mobileNo,landLineNo,address,pincode)
+	c.GET: getAllConacts
+		List<ResponseObject>-(id, name, mobileNo,landLineNo,address,pincode)
+	d.POST: deleteContactById
+	e.POST: updateContactById
+	
+2. service-user
+	a.GET: FindContactByName
+		List<ResponseObject>-(id, name, mobileNo,landLineNo,address,pincode)
+	b.GET: FindAllContacts
+		List<ResponseObject>-(id, name, mobileNo,landLineNo,address,pincode)
+		
+		
+// How to Communicate between Multiple Services in Microservice Architecture?
+
+	a. Synchronized Communcation
+		User-S1--->S2
+		
+		Depth: t1->under execution
+				t2-> underexecution
+				t3-> underexecution
+				
+	1. RestTemplate
+	2. WebClient (Reactive)
+	3. OpenFeign
+	4. RestClient
+				
+		
+	b. Asynchronized Communcation
+			User S1-> S2
+		1. WebClient with the help of Kafka or RabbitMQ or similar
+			
+			
+1. RestTemplate
+	1. GET
+	2. POST
+	3. PUT
+	4. DELETE
+	
+-----------
+
+1. We have to provide dependency inside our pom.xml
+
+2. Create Bean of RestTemplate
+
+3. Autowired RestTemplate
+
+4. Call other service using RestTemplate Object
+
+
+---------------------
+
+Call GET Method Using RestTemplate
+
+1. getForObject  (When we want only responseBody)
+
+	a. getForObject(String url, Class<T> responseType)
+	b. getForObject(String url, Class<T> responseType, Map<String, ?> uriVariables)
+	c. getForObject(String url, Class<T> responseType, Object... uriVariables)
+
+2. getForEntity (When we want responseBody, responseHeader and Status)
+
+	a.	getForEntity(URI url, Class<T> responseType)
+	b.	getForEntity(String url, Class<T> responseType, Map<String, ?> uriVariables)
+	c. getForEntity(String url, Class<T> responseType, Object... uriVariables)
+
+3. exchange (When we want to customize Headers, Get ResponseHeaders, Response Body, HttpStatus)
+
+	a. exchange(URI url, HttpMethod method, @Nullable HttpEntity<?> requestEntity, Class<T> responseType)
+	
+	b. exchange(String url, HttpMethod method,
+			@Nullable HttpEntity<?> requestEntity, Class<T> responseType, Map<String, ?> uriVariables)
+	
+	c. exchange(String url, HttpMethod method,
+			@Nullable HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables)
+
+
+eureka.client.fetch-registry=false
+This means the service will not fetch the registry information from the Eureka Server.
+Normally, Eureka clients fetch the list of registered services from the Eureka server to communicate with other services
+
+eureka.client.register-with-eureka=false
+This means the service will not register itself with Eureka Server.
+By default, services register themselves with the Eureka server to let others know they are available.
+
+
+---------------------------------
+
+Spring Cloud Open Feign
+
+ - The @FeignClient() annotation is used to call REST APIs of other microservices without writing the RestTemplate or WebClient manually
+ - Feign is a Declarative HTTP Client provided by Spring Cloud, which makes writing HTTP requests super simple.
+ - With Feign client, we only need interface and annotations.
+ 
+
+Step 1: Add Feign Dependency
+	<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-openfeign</artifactId>
+	</dependency>
+	
+Step 2: Enable Feign Client (@EnableFeignClients) -- top of the main class
+
+Step 3: Create Feign Client Interface | annote with @FeignClient
+	
+	@FeignClient(name = "SERVICE-CONTACT-DIARY")  // Service name registered in Eureka
+	public interface ContactServiceAPI{
+	
+		@GetMapping("/contact/getAllContacts")
+		public ResponseEntity<List<ContactProxy>> getAllConactDetails();
+		
+	}
+ 
+Step 4: Call Feign Client | Autowired the Interface in service implementation class and call the methods
+
+- Feign will automatically:
+
+	1. Discover the SERVICE-CONTACT-DIARY from Eureka Server.
+	2. Make an HTTP request to /contact/getAllContacts.
+	3. Convert the response into model automatically.
+
+--------------------------------------------------------------------
+
+
+
+http://localhost:8761/eureka
+
+
+
+
+
+-DServer.port=9097
+
+
+-----------------
+
+YML Configuration
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+         // Route 1 - User Service
+        - id: user-service
+          uri: http://localhost:8081  	 // Destination Service
+          predicates:
+            - Path=/api/users/**   		 // Request matching URL
+          filters:
+            - StripPrefix=1        		 // Removes '/api' from the request path

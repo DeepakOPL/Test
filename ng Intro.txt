@@ -1,0 +1,136 @@
+Component-> html Template+ Component class+ Component Metadata
+
+
+Inline Template and Style
+
+
+
+Skip Test File
+
+-> ng generate component UserWithoutTestFile --skip-tests
+
+Skip Html File
+
+-> ng generate component UserWithoutHTMLFile --inline-template
+
+Skip CSS File
+
+-> ng generate Component UserWithoutCSSFile --inline-style
+
+Skip Test and HTML File
+
+-> ng generate component UserWithoutTestAndHTMLFile --skip-tests --inline-template
+
+
+
+ng material:
+ng add @angular/material
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+When we generate Component: 
+
+1. login.component.html -> HTML Template  -> VIEW
+2. login.component.css -> Used to style our element -> VIEW
+
+
+3. login.component.ts -> TypeScript: Programming file -> Compile -> Java Script : Controller
+4. login.component.spec.ts -> Used for Testing purpose
+
+
+
+
+->>Data Binding 
+
+1. One Way Binding
+	-> Component to HTML Template (Interpolation, property binding, class binding etc)
+	-> HTML Template to Component (Event Binding)
+
+2. Two Way Binding
+	-> Forms
+	
+	
+	
+	
+=> One Way Binding: Component to Template
+
+1. Property Binding
+
+[nameOfPropertyDOM]="value" 
+
+
+2. Attribute Binding
+
+[attr.collspan]="var"
+
+3. Class Binding
+
+4. Syle Binding
+
+
+=> One Way Binding- Template to Component
+
+mouseup|mousedown|mouse
+
+---> Event Object $event
+
+---> Template Reference Variable #name
+
+
+
+
+
+
+
+
+///-------------
+
+Structural Directives in Angular 
+
+-> Structural directives are responsible for the structure and layout of the DOM element. It is used to hide or display the
+elements in the DOM
+
+a. ngIf
+b. ngIf --else
+c. ngSwitch
+d. ngFor
+
+
+
+
+-> ngIf structural Directive(*ngIf)
+
+a. ngIf directive is used to display or hide the DOM element based on the expression value assigned to it. 
+	The expression must return a Boolean Value.
+
+b. ngIf directive doesnot hide the DOM element. It removes the entire element along with its subtree from the DOM
+
+->ngIf --else Structural Directive
+
+a. ngIf--else works like a simple if else statement wherein if the condition is true then if DOM element is rendered, else
+	the other DOM element is rendered.
+
+b. Angular uses ng-template with element selector (Template reference variable) in order to display the else section in DOM.
+
+-> ngSwitch Structural Directive
+
+a. The ngSwitch directive is applied to the container element with a switch expression. Container elements are div, header, footer etc.
+
+b.In angular ngSwitchCase directive , the inner elements are placed inside the container element.
+
+c. ngSwitchDefault
+
+
+

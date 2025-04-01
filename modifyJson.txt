@@ -1,0 +1,36 @@
+package com.opl.dataprovider.service.gst.utils;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Component;
+
+import com.jayway.jsonpath.Criteria;
+import com.jayway.jsonpath.Filter;
+import com.jayway.jsonpath.JsonPath;
+
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
+@Component
+public class ModifyJsonResponse {
+	public String modifyTpByPanResponse(String jsonInput, String key, String value) {
+		Filter activeGstinFilter = getJsonFilter(key, value);
+		List<Map<String, Object>> filteredJson = JsonPath.parse(jsonInput).read("$.data[?]", activeGstinFilter);
+		JSONObject resultJson = new JSONObject();
+		resultJson.put("status_cd", JsonPath.read(jsonInput, "$.status_cd"));
+		JSONArray dataArray = new JSONArray();
+		filteredJson.stream().map(JSONObject::new).forEach(dataArray::add);
+		if (filteredJson.isEmpty()) {
+			JSONObject noActiveData = new JSONObject();
+			noActiveData.put("sts", "Inactive");
+			dataArray.add(noActiveData);
+		}
+		resultJson.put("data", dataArray);
+		return resultJson.toString();
+	}
+
+	private Filter getJsonFilter(String key, String value) {
+		return Filter.filter(Criteria.where(key).eq(value));
+	}
+}
