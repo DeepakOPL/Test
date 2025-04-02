@@ -1,0 +1,144 @@
+
+->For Build: cd /apps/services/sandbox/
+->Re-starting service-> sudo sh deploy.sh
+-> Stopping Service-> sudo jps -v | grep servicename   // get pid
+-> sudo kil -9 pid
+
+-> chck all running services - ps -ef
+
+To clear the nohup file 
+-> cat /dev/null > nohup.out
+
+Create File-> Sudo touch fileName
+*>Creat folder-> mkdir name_of_dir
+
+View Code: cat application_name.java
+
+Edit file-> vi file_name -|
+press i to go into the edit mode-> press Esc key to out of insert mode->edit the file and to save :wq
+
+>> sudo nano config/application.yml
+
+sudo docker restart
+
+N- 881038114292125
+
+##S3 AWS Related Command
+
+aws s3 ls development-sit-oam-plus-data/data-mca/
+
+ws s3 ls development-sit-oam-plus-data/oam-responses/ | grep 'gatewayRequest_bbc8f5124929413ba90dae4deba367c9'
+
+Create Bucket:
+aws s3api put-object --bucket bucket-name --key folder-name/ --content-length 0
+aws s3api put-object --bucket development-uat-oam-plus-data --key data-mca/ --content-length 0
+
+Unknow Error. Please contact Support.
+SELECT * FROM `data-config`.error_code_master where code="GEN5001";
+
+
+QA DB Access 
+
+
+ctr+shift-> R (File), T (Classes inside file)
+
+ctrl+shift+alt->L -> Code Url
+
+Windows+V -> Copy clipboard Histroy
+
+ctrl+alt+h-> Hierarchy Details'
+ctrl+shif+i-> debug line of code
+ctrl+h -> search across workspace
+
+
+DeepakOPL
+
+click on switch word and press ctr+1 it will convert switch to if-else if-else
+
+Hold alt key and press the location for multiple selection
+
+
+SELECT UNCOMPRESS(`companyhisotry`) FROM `data-mca-api`.mca_place_order WHERE `id` = 6
+
+
+
+curl ifconfig.me for outgoing ip
+ 
+sudo tail -200f nohup.out
+
+for specific date and time
+
+sudo tail -f -n 500000  nohup.out | grep -i "2024-08-12 14:3"
+
+check the running port Number:
+netstat -tulpn | grep 1124
+
+Check LISTEN Port Number
+netstat -lntpu
+
+Data Response from MCA 
+
+Calling POST API With Header : [http://sandbox-user-service/sandbox/usermgmt/file/getClientPublicKeyForGateway/31]
+
+
+SELECT DATE_FORMAT(created_date,"%M-%Y") AS 'month',IF(provider IS NULL OR provider = '', '-',provider) AS 'Provider',COUNT(DATE_FORMAT(created_date,"%M-%Y")) AS 'Count' 
+FROM `data-gst`.`req_res_audits` WHERE provider != 'GOV_GST' GROUP BY DATE_FORMAT(created_date,"%M-%Y"),provider ORDER BY created_date DESC
+
+Docker
+
+To just copy 
+sudo sh /apps/services/jenkinsPath/docker.sh oam-registry /apps/services/sandbox/
+
+sudo docker exec -it oam-registry /bin/sh
+ls
+application.properties
+
+Except TP_BY_PAN
+
+ 
+
+SELECT DATE_FORMAT(created_date,"%M-%Y") AS 'month',IF(provider IS NULL OR provider = '', '-',provider) AS 'Provider',COUNT(DATE_FORMAT(created_date,"%M-%Y")) AS 'Count' 
+FROM `data-gst`.`req_res_audits` WHERE request_type != 'TP_BY_PAN' AND provider != 'GOV_GST' GROUP BY DATE_FORMAT(created_date,"%M-%Y"),provider ORDER BY created_date DESC
+
+
+
+
+
+
+TP_BY_PAN
+
+ 
+
+SELECT DATE_FORMAT(created_date,"%M-%Y") AS 'month',IF(provider IS NULL OR provider = '', '-',provider) AS 'Provider',COUNT(DATE_FORMAT(created_date,"%M-%Y")) AS 'Count' 
+FROM `data-gst`.`req_res_audits` WHERE request_type = 'TP_BY_PAN'  GROUP BY DATE_FORMAT(created_date,"%M-%Y"),provider ORDER BY created_date DESC;
+
+
+
+#MCA
+
+SELECT DATE_FORMAT(created_date,"%M-%Y") AS 'month' ,COUNT(DATE_FORMAT(created_date,"%M-%Y")) AS 'Count' 
+FROM `data-mca-api-service`.mca_place_order where mca_ref_id LIKE '6%' GROUP BY DATE_FORMAT(created_date,"%M-%Y") ORDER BY created_date DESC
+
+
+ip reputation check
+
+
+SELECT AES_DECRYPT(UNHEX('c2eb6f0d675fe9a5fb425e508d9e248317311f689f556bccd5bcaf58e9bce5ea'),'C@p!ta@W0rld#AES') : ======>Decrypt
+SELECT HEX(AES_ENCRYPT('9913287703','C@p!ta@W0rld#AES')); ===> Encrypy
+
+Add jdk manually in restart.sh script
+
+#kill -9 $(lsof -t -i :1104)
+sudo fuser -k 1104/tcp
+sudo nohup sh -c 'export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.412.b08-2.el9.x86_64 && export PATH=$JAVA_HOME/bin:$PATH && java -XX:+UseG1GC -Xms25
+6m -Xmx1024m -Dname=oam-service-user  -jar oam-service-user-1.0.0.jar --Dserver.port=1104 --spring.cloud.bootstrap.location=file:/apps/services/sandbox/oam-s
+ervice-user/config/bootstrap.properties --spring.config.location=file:/apps/services/sandbox/oam-service-user/config/application.properties >> nohup.out  2>&
+1' &
+
+
+
+sudo docker stats | grep service-mca-probe
+
+sudo docker restart service-name
+
+source /etc/enviornment
